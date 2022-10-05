@@ -1,58 +1,59 @@
 @goto latest at github.com/AveYo/MediaCreationTool.bat
-:Universal MCT wrapper script for all Windows 10/11 versions from 1507 to 21H2!
-:: Nothing but Microsoft-hosted source links and no third-party tools; script just configures an xml and starts MCT
-:: Ingenious support for business editions (Enterprise / VL) selecting language, x86, x64 or AiO inside the MCT GUI
-:: Changelog: 2022.03.20 stable
-:: - all issues ironed out; upgrade keeping files from Eval editions too; pickup $ISO$ dir content to add on media
-:: - DU in 11: auto installs 22000.556 atm; older skip_11_checks, without Server label; Home offline local account
-:: on upgrade: latest build, on offline install: 11 22000.318 / 21H2 19044.1288 / 21H1 19043.1348 / 20H2 19042.1052
+:Universal
+:: 1507から21H2までのWindows 10/11用MCTラッパー・スクリプト!
+:: マイクロソフトがホストするソースリンクのみを使用しサードパーティツールは使用していません、スクリプトは xml を構成し、MCT を開始します。
+:: GUI内で言語、x86、x64またはAiOを選択するビジネスエディション（Enterprise / VL）のサポート
+:: 更新履歴: 2022.03.20 安定版
+:: - すべての問題が解決されました; Eval版のファイルをアップグレードし、$ISO$ディレクトリの内容をピックアップしてメディアに追加する
+:: - DU in 11: 22000.556 atmの自動インストール; 以前の skip_11_checks, サーバーラベルなし; Homeエディションでのオフライン時のローカルアカウント
+:: アップグレード時: 最新ビルド, オフラインインストール: 11 22000.318 / 21H2 19044.1288 / 21H1 19043.1348 / 20H2 19042.1052
 
-::# uncomment to skip GUI dialog for MCT choice: 1507 to 2109 / 11 - or rename script: "21H2 MediaCreationTool.bat"
+::# MCT選択時のGUIダイアログをスキップするにはコメントを解除: 1507 to 2109 / 11 - またはスクリプトの名前を変更する: "21H2 MediaCreationTool.bat"
 rem set MCT=2110
 
-::# uncomment to start auto upgrade setup directly (no prompts) - or rename script: "auto 11 MediaCreationTool.bat"
+::# 自動アップグレードのセットアップを直接開始するにはコメントを解除（プロンプトなし） - またはスクリプトの名前を変更する: "auto 11 MediaCreationTool.bat"
 rem set /a AUTO=1
 
-::# uncomment to start create iso directly in current folder - or rename script:   "iso 20H2 MediaCreationTool.bat"
+::# カレントフォルダに直接isoを作成するためにはコメントを解除 - またはスクリプトの名前を変更する:   "iso 20H2 MediaCreationTool.bat"
 rem set /a ISO=1
 
-::# uncomment and change autodetected MediaEdition - or rename script:  "enterprise iso 2009 MediaCreationTool.bat"
+::# 自動検出されるメディアのエディションを変更するにはコメントを解除 - またはスクリプトの名前を変更する:  "enterprise iso 2009 MediaCreationTool.bat"
 rem set EDITION=Enterprise
 
-::# uncomment and change autodetected MediaLangCode - or rename script:   "de-DE home 11 iso MediaCreationTool.bat"
+::# 自動検出されるメディアの言語を変更するにはコメントを解除 - またはスクリプトの名前を変更する:   "de-DE home 11 iso MediaCreationTool.bat"
 rem set LANGCODE=en-US
 
-::# uncomment and change autodetected MediaArch - or rename script:  "x64 iso 1909 Education MediaCreationTool.bat"
+::# 自動検出されるメディアのアーキテクチャを変更するにはコメントを解除 - またはスクリプトの名前を変更する:  "x64 iso 1909 Education MediaCreationTool.bat"
 rem set ARCH=x64
 
-::# uncomment and change autodetected KEY - or rename script / provide via commandline - not needed for generic key
+::# 自動検出されるキーを変更するにはコメントを解除 - またはスクリプトの名前を変更する / コマンドラインで提供 - 一般的なキーでは不要
 rem set KEY=NPPR9-FWDCX-D2C8J-H872K-2YT43
 
-::# uncomment to disable dynamic update for setup sources - or rename script: no_update 21H2 MediaCreationTool.bat"
+::# セットアップソースの動的更新を無効にするにはコメントを解除 - またはスクリプトの名前を変更する: no_update 21H2 MediaCreationTool.bat"
 rem set /a NO_UPDATE=1
 
-::# uncomment to not add EI.cfg PID.txt auto.cmd $ISO$ dir content - or rename script:  "def MediaCreationTool.bat"
+::# EI.cfg PID.txt auto.cmd $ISO$ ディレクトリの内容を追加しないようにするにはコメントを解除 - またはスクリプトの名前を変更する:  "def MediaCreationTool.bat"
 ::# this will create a default, untouched MCT media 
 rem set /a DEF=1
 
-::# comment to not use recommended windows setup options that give the least amount of issues when doing upgrades
+::# アップグレードの際に推奨されるWindowsセットアップオプションを使用しない場合はコメントアウト
 set OPTIONS=%OPTIONS% /Compat IgnoreWarning /MigrateDrivers All /ResizeRecoveryPartition Disable /ShowOOBE None
 
-::# comment to not disable setup telemetry / disable Compact OS
+::# セットアップテレメトリーとCompact OSを無効にしない場合はコメントアウト
 set OPTIONS=%OPTIONS% /Telemetry Disable /CompactOS Disable
 
-::# comment to not unhide Enterprise for 1709+ in products.xml
+::# 1709+のEnterpriseをproducts.xmlで非表示にしない場合はコメントアウト
 set /a UNHIDE_BUSINESS=1
 
-::# comment to not insert Enterprise esd links for 1607,1703 or update links for 1909,2004,20H2,21H2,11 in products.xml
+::# comment to 1607,1703のEnterprise esdリンクや1909,2004,20H2,21H2,11のアップデートリンクをproducts.xmlに挿入しない場合はコメントアウト
 set /a INSERT_BUSINESS=1
 
-::# MCT Version choice dialog items and default-index [11]
+::# MCTバージョン選択ダイアログのアイテムとデフォルトインデックス [11]
 set VERSIONS=1507,1511,1607,1703,1709,1803,1809,1903,1909,20H1,20H2,21H1,21H2,11
 set /a dV=14
 
-::# MCT Preset choice dialog items and default-index [Select in MCT]
-set PRESETS=^&Auto Upgrade,Auto ^&ISO,Auto ^&USB,^&Select,MCT ^&Defaults
+::# MCTプリセット選択ダイアログの項目とデフォルトインデックス [Select in MCT]
+set PRESETS=^&自動アップグレード,自動 ^&ISO作成,自動 ^&USB作成,^&選択,MCT ^&標準
 set /a dP=4
 
 :begin
@@ -65,7 +66,8 @@ for %%s in (%OS_LANGCODE%) do set "OS_LANGCODE=%%s"
 set "OS_ARCH=x64" & if "%PROCESSOR_ARCHITECTURE:~-2%" equ "86" if not defined PROCESSOR_ARCHITEW6432 set "OS_ARCH=x86"
 
 ::# parse MCT choice from script name or commandline - accepts both formats: 1909 or 19H2 etc.
-for %%V in (1.1507 2.1511 3.1607 4.1703 5.1709 6.1803 7.1809 8.1903 8.19H1 9.1909 9.19H2 10.2004 10.20H1 11.2009 11.20H2 12.2104
+for %%V in (1.1507 2.1511 3.1607 4.1703 5.1709 6.1803 7.1809 8.1903 8.19H1 9.1909 9.19H2 10.2004 10.20H1 1
+1.2009 11.20H2 12.2104
  12.21H1 13.2109 13.21H2 14.2110 14.11) do for %%s in (%MCT% %~n0 %*) do if /i %%~xV equ .%%~s set "MCT=%%~nV" & set "VID=%%~s"
 if defined MCT if not defined VID set "MCT="
 
@@ -126,14 +128,14 @@ for %%s in (%*) do for %%P in (1 2 3 4) do if %%~ns gtr 0 if %%~ns lss 15 if %%~
 %<%:f0 " Detected Media "%>>% & if defined MCT %<%:5f " %VID% "%>>%
 %<%:6f " %MEDIA_LANGCODE% "%>>%  &  %<%:9f " %MEDIA_EDITION% "%>>%  &  %<%:2f " %MEDIA_ARCH% "%>%
 echo;
-%<%:1f "1  Auto Upgrade  : MCT gets detected media, script assists setupprep for upgrading "%>%
-%<%:1f "2    Auto ISO    : MCT gets detected media, script assists making ISO here | C:ESD "%>%
-%<%:1f "3    Auto USB    : MCT gets detected media, script assists making USB stick target "%>%
-%<%:1f "4     Select     : MCT gets selected Edition, Language, Arch onto specified target "%>%
-%<%:1f "5  MCT Defaults  : MCT runs unassisted, creating media without script modification "%>%
+%<%:1f "1  自動アップグレード : MCTは検出されたメディアを取得し、スクリプトはアップグレードのためのセットアップの準備を支援します。 "%>%
+%<%:1f "2    自動ISO作成      : MCTは検出されたメディアを取得し、スクリプトはISOの作成を支援します。 | C:ESD "%>%
+%<%:1f "3    自動USB作成      : MCTは検出されたメディアを取得し、スクリプトはUSBスティックへの書き込みを支援します。 "%>%
+%<%:1f "4     	選択          : MCTは、選択されたエディション、言語、アーキテクチャをターゲットに取得します。 "%>%
+%<%:1f "5     MCT 標準        : MCTはスクリプトを修正することなく、メディア作成をアシストなしで実行されます。 "%>%
 echo;
-%<%:17 "1-4 adds to media: PID.txt, EI.cfg, $ISO$ dir, auto.cmd for upgrade and tpm checks "%>%
-%<%:17 "can rename script: "%>>% & %<%:1f "def MediaCreationTool.bat"%>>% & %<%:17 " to always create unmodified MCT media "%>%
+%<%:17 "1-4 メディアに追加: PID.txt, EI.cfg, $ISO$ ディレクトリ, アップグレードとtpmチェックのためにauto.cmdを使用します "%>%
+%<%:17 "スクリプトの名前を変更できます: "%>>% & %<%:1f "def MediaCreationTool.bat"%>>% & %<%:17 " 常に無修正のMCTメディアを作成するため "%>%
 
 ::# show more responsive MCT + PRE pseudo-menu dialog or separate choice dialog instances if either MCT or PRE are set
 if "%MCT%%PRE%"=="" call :choices2 MCT "%VERSIONS%" %dV% "MCT Version" PRE "%PRESETS%" %dP% "MCT Preset" 11 white 0x005a9e 320
@@ -246,7 +248,7 @@ set /a MCT=%dv% & set /a PRE=%dP% & goto choice-%dV%
 %<%:0c " CANCELED "%>% & timeout /t 3 >nul & exit /b
 
 :latest unified console appearance under 7 - 11
-@echo off& title MCT& set __COMPAT_LAYER=Installer& chcp 437 >nul& set set=& for %%s in (%*) do if /i %%s equ set (set set=1)
+@echo off& title MCT& set __COMPAT_LAYER=Installer& chcp 932 >nul& set set=& for %%s in (%*) do if /i %%s equ set (set set=1)
 if not defined set set /a BackClr=0x1 & set /a TextClr=0xf & set /a Columns=32 & set /a Lines=120 & set /a Buff=9999
 if not defined set set /a SColors=BackClr*16+TextClr & set /a WSize=Columns*256*256+Lines & set /a BSize=Buff*256*256+Lines
 if not defined set for %%s in ("HKCU\Console\MCT") do (
